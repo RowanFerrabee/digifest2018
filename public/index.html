@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Control Z</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+
+<body onload="loadData()">
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Control Z</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="/monitor">Monitor</a></li>
+        <li><a href="/trends">Trends</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+  </nav>
+
+  <div class="container">
+
+    <h1 class="starter-template"> Monitor </h1>
+
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Oven</h3>
+        <p id="oven"></p>
+        <button type="button" onclick="sendData()">Toggle</button>
+      </div>
+      <div class="col-md-4">
+        <h3>Lights</h3>
+        <p id="lights"></p>
+        <button type="button" onclick="sendData()">Toggle</button>
+      </div>
+      <div class="col-md-4">
+        <h3>Air Con</h3>
+        <p id="aircon"></p>
+        <button type="button" onclick="sendData()">Toggle</button>
+      </div>
+    </div>
+
+  </div><!-- /.container -->
+
+<script>
+
+function loadData() {
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var jsonObj = JSON.parse(this.responseText);
+      for (var i in jsonObj) {
+        console.log(i, jsonObj[i])
+        document.getElementById(i).innerHTML = jsonObj[i]+" kW";
+      }
+    }
+  };
+  xhttp.open("GET", "read", true);
+  xhttp.send();
+
+  setTimeout(loadData, 300);
+}
+
+function sendData() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+  };
+  xhttp.open("GET", "write", true);
+  xhttp.send();
+}
+</script>
+
+</body>
+</html>
