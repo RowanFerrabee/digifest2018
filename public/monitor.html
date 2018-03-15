@@ -16,7 +16,7 @@
   <link href="css/sb-admin.css" rel="stylesheet">
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<body class="fixed-nav sticky-footer bg-dark" id="page-top" onload="loadData()">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="index.html">Control Z</a>
@@ -172,6 +172,31 @@
         <li class="breadcrumb-item active">Monitor</li>
       </ol>
       <!-- Area Chart Example-->
+
+      <div class="card mb-3">
+        <div class="card-header">
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <h3>Oven</h3>
+              <p id="oven"></p>
+              <button type="button" onclick="sendData()">Toggle</button>
+            </div>
+            <div class="col-md-4">
+              <h3>Lights</h3>
+              <p id="lights"></p>
+              <button type="button" onclick="sendData()">Toggle</button>
+            </div>
+            <div class="col-md-4">
+              <h3>Air Con</h3>
+              <p id="aircon"></p>
+              <button type="button" onclick="sendData()">Toggle</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="card mb-3">
         <div class="card-header">
           <i class="fa fa-area-chart"></i> Total Daily Power Usage</div>
@@ -247,6 +272,34 @@
     <script src="js/sb-admin.min.js"></script>
     <!-- Custom scripts for this page-->
     <script src="js/sb-admin-charts.min.js"></script>
+
+    <script>
+    function loadData() {
+
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var jsonObj = JSON.parse(this.responseText);
+          for (var i in jsonObj) {
+            console.log(i, jsonObj[i])
+            document.getElementById(i).innerHTML = jsonObj[i]+" kW";
+          }
+        }
+      };
+      xhttp.open("GET", "read", true);
+      xhttp.send();
+
+      setTimeout(loadData, 300);
+    }
+
+    function sendData() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+      };
+      xhttp.open("GET", "write", true);
+      xhttp.send();
+    }
+    </script>
   </div>
 </body>
 
