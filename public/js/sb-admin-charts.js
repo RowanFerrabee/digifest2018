@@ -17,6 +17,16 @@ function loadMonitorData() {
         counter += 1;
       }
 
+      div_ids = ["lightsButton", "ovenButton", "airconButton", "dryerButton"]
+      for (var i = 0; i<powerData.length; i++) {
+        var div = document.getElementById(div_ids[i]);
+        if (powerData[i] == 0 && div.checked) {
+          div.checked = false;
+        } else if (powerData[i] != 0 && div.checked == false) {
+          div.checked = true;
+        }
+      }
+
       var ctx = document.getElementById("myBarChart");
       var myLineChart = new Chart(ctx, {
         type: 'bar',
@@ -30,6 +40,11 @@ function loadMonitorData() {
           }],
         },
         options: {
+          tooltips: {
+            callbacks: {
+              label: (item) => item.yLabel + " W",
+            },
+          },
           scales: {
             xAxes: [{
               time: {
